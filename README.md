@@ -12,7 +12,7 @@ Display optimized images using CDN or other means.
   import { Image } from "svelte-remote-image";
 
   // CDN URL
-	const optimazerPrefix = 'https://nostr-image-optimizer.ocknamo.com/image/';
+  const optimazerPrefix = 'https://nostr-image-optimizer.ocknamo.com/image/';
   const originalImageUrl = 'https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp'
 
 	let src: ImageSrc = {
