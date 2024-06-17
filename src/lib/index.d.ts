@@ -1,1 +1,1 @@
-export * from './components/image.type';
+export * from './components/image.type'

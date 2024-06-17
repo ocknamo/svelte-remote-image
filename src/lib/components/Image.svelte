@@ -1,41 +1,43 @@
 <script lang="ts">
-  import type { ImageSrc } from "./image.type.js";
+import type { ImageSrc } from './image.type.js'
 
-	export let src: ImageSrc;
+export let src: ImageSrc
 
-	// Set default value
-	src = { ...src, blur: src.blur === undefined ? true : src.blur };
+// Set default value
+src = { ...src, blur: src.blur === undefined ? true : src.blur }
 
-	export let style: string;
+export let style = ''
 
-	let loadStatus: 'loading' | 'loaded' = 'loading';
-	let imageWrapperStyle = '';
+let loadStatus: 'loading' | 'loaded' = 'loading'
+let imageWrapperStyle = ''
 
-	if (src.placeholder) {
-		style = src.placeholder.dataUri
-			? `${style} background: url(${src.placeholder.dataUri}) no-repeat center/cover;`
-			: style;
-		imageWrapperStyle = src.placeholder.color ? `background-color: ${src.placeholder.color}` : '';
+if (src.placeholder) {
+	style = src.placeholder.dataUri
+		? `${style} background: url(${src.placeholder.dataUri}) no-repeat center/cover;`
+		: style
+	imageWrapperStyle = src.placeholder.color
+		? `background-color: ${src.placeholder.color}`
+		: ''
+}
+
+const handleImgError = (e: Event) => {
+	if (e.type !== 'error') {
+		return
 	}
 
-	const handleImgError = (e: Event) => {
-		if (e.type !== 'error') {
-			return;
-		}
+	// failback
+	src = {
+		...src,
+		img: src.failback,
+		webp: [],
+		jpeg: [],
+		png: [],
+	}
+}
 
-		// failback
-		src = {
-			...src,
-			img: src.failback,
-			webp: [],
-			jpeg: [],
-			png: []
-		};
-	};
-
-	const handleLoaded = () => {
-		loadStatus = 'loaded';
-	};
+const handleLoaded = () => {
+	loadStatus = 'loaded'
+}
 </script>
 
 <div class="picture-wrapper" style={imageWrapperStyle}>
