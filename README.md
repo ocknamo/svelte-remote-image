@@ -1,5 +1,7 @@
 # svelte-remote-image
 
+[demo](https://svelte-remote-image.pages.dev/)
+
 Display optimized images using CDN or other means.
 
 ## How to use
