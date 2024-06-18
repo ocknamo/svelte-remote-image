@@ -40,3 +40,5 @@ const src: ImageSrc = {
 <p>Display optimized images using CDN or other means.</p>
 
 <Image {src} />
+
+<a href="https://github.com/ocknamo/svelte-remote-image" target="_blank" rel="noopener noreferrer">github</a>
