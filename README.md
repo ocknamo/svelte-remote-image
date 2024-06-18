@@ -2,9 +2,32 @@
 
 [demo](https://svelte-remote-image.pages.dev/)
 
-Display optimized images using CDN or other means.
+Display optimized, responsive and progressive images for Svelte.
+With remote image URL of CDN or other means.
+
+- Fade-in and blur on image reveal.
+- An image URL can be set to failback if an image cannot be retrieved from the source URL due to an error.
+- A pre-rendered low-quality dataURI can be set as a placeholder.
+
+
+## Install
+
+Install the package.
+
+```
+$ npm i svelte-remote-image
+```
+
+And import components and types. 
+
+```
+  import type { ImageSrc } from "svelte-remote-image";
+  import { Image } from "svelte-remote-image";
+```
 
 ## How to use
+
+Sample code.
 
 ```
 <script lang="ts">
@@ -33,9 +56,6 @@ Display optimized images using CDN or other means.
 	};
 </script>
 
-<h1>Welcome to Svelte Remote Image</h1>
-<p>Display optimized images using CDN or other means.</p>
-
 <Image {src} />
 ```
 
@@ -62,8 +82,48 @@ The image component renders into:
 }
 ```
 
-
 Inspired by [svelte-img](https://github.com/zerodevx/svelte-img?tab=readme-ov-file#remote-images-from-an-api).
+
+## Config
+
+### ImageSrc
+
+- img: string
+  - image url.
+
+- w: number
+  - image width.
+
+- h?: number
+  - image height.
+
+- webp?: Srcset[]
+  - image source for webp.
+
+- jpeg?: Srcset[]
+  - image source for jpeg.
+
+- png?: Srcset[]
+  - image source for png.
+
+- failback: string
+  - failback image url.
+
+- alt: string
+  - alt
+
+- placeholder?: { dataUri?: string; color?: string }
+  - Image data and background color for fastest display.
+
+- blur?: boolean
+  - Whether to use the blur effect when displaying the image.
+
+### Srcset
+
+- src: string
+  - Image URL.
+- w: number
+  - width to display.
 
 ## Developing
 
