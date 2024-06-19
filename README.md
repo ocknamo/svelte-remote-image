@@ -21,8 +21,7 @@ $ npm i svelte-remote-image
 And import components and types. 
 
 ```
-  import type { ImageSrc } from "svelte-remote-image";
-  import { Image } from "svelte-remote-image";
+	import { Image, type ImageSrc } from "svelte-remote-image";
 ```
 
 ## How to use
@@ -31,8 +30,7 @@ Sample code.
 
 ```
 <script lang="ts">
-  import type { ImageSrc } from "svelte-remote-image";
-  import { Image } from "svelte-remote-image";
+	import { Image, type ImageSrc } from "svelte-remote-image";
 
   // CDN URL
   const optimazerPrefix = 'https://nostr-image-optimizer.ocknamo.com/image/';
