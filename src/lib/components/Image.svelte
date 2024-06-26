@@ -9,15 +9,14 @@ src = { ...src, blur: src.blur === undefined ? true : src.blur }
 export let style = ''
 
 let loadStatus: 'loading' | 'loaded' = 'loading'
-let imageWrapperStyle = ''
 
 if (src.placeholder) {
-	style = src.placeholder.dataUri
-		? `${style} background: url(${src.placeholder.dataUri}) no-repeat center/cover;`
-		: style
-	imageWrapperStyle = src.placeholder.color
-		? `background-color: ${src.placeholder.color}`
-		: ''
+	if (src.placeholder.dataUri) {
+		style = `${style} background: url(${src.placeholder.dataUri}) no-repeat center/cover;`
+	}
+	if (src.placeholder.color) {
+		style = `${style} background-color: ${src.placeholder.color};`
+	}
 }
 
 const handleImgError = (e: Event) => {
@@ -40,30 +39,28 @@ const handleLoaded = () => {
 }
 </script>
 
-<div class="picture-wrapper" style={imageWrapperStyle}>
-	<picture>
-		{#if src.webp}
-			<source srcset={src.webp.map((s) => `${s.src} ${s.w}w`).join(', ')} type="image/webp" />
-		{/if}
-		{#if src.jpeg}
-			<source srcset={src.jpeg.map((s) => `${s.src} ${s.w}w`).join(', ')} type="image/jpeg" />
-		{/if}
-		{#if src.png}
-			<source srcset={src.png.map((s) => `${s.src} ${s.w}w`).join(', ')} type="image/png" />
-		{/if}
-		<img
-			width={src.w}
-			height={src.h}
-			{style}
-			class={src.blur ? `image-blur-${loadStatus}` : ''}
-			src={src.img}
-			alt={src.alt}
-			on:error={handleImgError}
-			on:load={handleLoaded}
-			loading="lazy"
-		/>
-	</picture>
-</div>
+<picture>
+	{#if src.webp}
+		<source srcset={src.webp.map((s) => `${s.src} ${s.w}w`).join(', ')} type="image/webp" />
+	{/if}
+	{#if src.jpeg}
+		<source srcset={src.jpeg.map((s) => `${s.src} ${s.w}w`).join(', ')} type="image/jpeg" />
+	{/if}
+	{#if src.png}
+		<source srcset={src.png.map((s) => `${s.src} ${s.w}w`).join(', ')} type="image/png" />
+	{/if}
+	<img
+		width={src.w}
+		height={src.h}
+		{style}
+		class={src.blur ? `image-blur-${loadStatus}` : ''}
+		src={src.img}
+		alt={src.alt}
+		on:error={handleImgError}
+		on:load={handleLoaded}
+		loading="lazy"
+	/>
+</picture>
 
 <style>
 	.image-blur-loading {
@@ -95,11 +92,6 @@ const handleLoaded = () => {
 			filter: blur(10px);
 			opacity: 1;
 		}
-	}
-
-	.picture-wrapper {
-		width: fit-content;
-		height: fit-content;
 	}
 
 	img {
