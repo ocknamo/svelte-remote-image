@@ -39,6 +39,6 @@ const src: ImageSrc = {
 <h1>Welcome to Svelte Remote Image</h1>
 <p>Display optimized images using CDN or other means.</p>
 
-<Image {src} />
+<Image {src} style='max-width: 100%;'/>
 
 <a href="https://github.com/ocknamo/svelte-remote-image" target="_blank" rel="noopener noreferrer">github</a>

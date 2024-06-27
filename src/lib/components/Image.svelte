@@ -85,11 +85,11 @@ const handleLoaded = () => {
 
 	@keyframes show {
 		from {
-			filter: blur(20px);
+			filter: blur(10px);
 			opacity: 0.5;
 		}
 		to {
-			filter: blur(10px);
+			filter: blur(5px);
 			opacity: 1;
 		}
 	}
