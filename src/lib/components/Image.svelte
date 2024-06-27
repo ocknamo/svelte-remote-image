@@ -31,6 +31,10 @@ const handleImgError = (e: Event) => {
 		webp: [],
 		jpeg: [],
 		png: [],
+		placeholder: {
+			color: src.placeholder?.color,
+			dataUri: src.placeholder?.dataUri,
+		},
 	}
 }
 
