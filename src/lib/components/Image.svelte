@@ -98,7 +98,4 @@ const handleLoaded = () => {
 		}
 	}
 
-	img {
-		display: block;
-	}
 </style>
