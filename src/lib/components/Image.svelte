@@ -2,10 +2,6 @@
 import type { ImageSrc } from './image.type.js'
 
 export let src: ImageSrc
-
-// Set default value
-src = { ...src, blur: src.blur === undefined ? true : src.blur }
-
 export let style = ''
 
 let loadStatus: 'loading' | 'loaded' = 'loading'
