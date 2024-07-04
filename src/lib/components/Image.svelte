@@ -24,6 +24,9 @@ const handleImgError = (e: Event) => {
 		return
 	}
 
+	const img = e.currentTarget as HTMLImageElement
+	img.style.display = 'none'
+
 	// failback
 	src = {
 		...src,
@@ -35,10 +38,13 @@ const handleImgError = (e: Event) => {
 			color: src.placeholder?.color,
 			dataUri: src.placeholder?.dataUri,
 		},
+		blur: src.blur,
 	}
 }
 
-const handleLoaded = () => {
+const handleLoaded = (e: Event) => {
+	const img = e.currentTarget as HTMLImageElement
+	img.style.display = 'inline'
 	loadStatus = 'loaded'
 }
 </script>
