@@ -1,9 +1,12 @@
 <script lang="ts">
 import { fail } from '@sveltejs/kit'
 import type { ImageSrc } from './image.type.js'
+import { afterUpdate } from 'svelte'
 
 export let src: ImageSrc
 export let style = ''
+
+const imgId = `svelte-remote-image-${src.alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
 
 let loadStatus: 'loading' | 'loaded' = 'loading'
 
@@ -16,12 +19,35 @@ if (src.placeholder) {
 	}
 }
 
-const handleImgError = (e: Event) => {
-	if (e.type !== 'error') {
+afterUpdate(() => {
+	const img = getImgElement()
+
+	if (!img) {
 		return
 	}
 
-	const img = e.currentTarget as HTMLImageElement
+	// Image load success.
+	if (img.naturalWidth !== 0 && img.naturalHeight !== 0) {
+		img.style.visibility = 'visible'
+		loadStatus = 'loaded'
+	} else {
+		// Failed
+		handleImgError()
+	}
+})
+
+const handleImgError = (e?: Event) => {
+	if (e && e.type !== 'error') {
+		return
+	}
+
+	const img = getImgElement()
+
+	if (!img) {
+		return
+	}
+
+	img.style.visibility = 'hiddin'
 
 	let failbackUrl: string | undefined = undefined
 
@@ -32,7 +58,6 @@ const handleImgError = (e: Event) => {
 		failbackUrl = src.failback[0]
 	} else {
 		failbackUrl = src.failback[index + 1]
-		;[]
 	}
 
 	if (!failbackUrl) {
@@ -49,16 +74,18 @@ const handleImgError = (e: Event) => {
 		placeholder: {
 			color: src.placeholder?.color,
 			dataUri: src.placeholder?.dataUri,
-		},
-		blur: src.blur,
+		}
 	}
 }
 
 const handleLoaded = (e: Event) => {
 	const img = e.currentTarget as HTMLImageElement
-	img.style.display = 'inline'
+	img.style.visibility = 'visible'
 	loadStatus = 'loaded'
 }
+
+const getImgElement = () =>
+	document.getElementById(imgId) as HTMLImageElement | null
 </script>
 
 <picture>
@@ -72,10 +99,11 @@ const handleLoaded = (e: Event) => {
 		<source srcset={src.png.map((s) => `${s.src} ${s.w}w`).join(', ')} type="image/png" />
 	{/if}
 	<img
+		id={imgId}
 		width={src.w}
 		height={src.h}
 		{style}
-		class={src.blur ? `image-blur-${loadStatus}` : ''}
+		class={src.blur ? `svelte-remote-image image-blur-${loadStatus}` : 'svelte-remote-image'}
 		src={src.img}
 		alt={src.alt}
 		on:error={handleImgError}
@@ -85,6 +113,10 @@ const handleLoaded = (e: Event) => {
 </picture>
 
 <style>
+	img.svelte-remote-image {
+		/* initial value */
+		visibility: hidden;
+	}
 	.image-blur-loading {
 		animation:
 			0.5s linear 0s normal waiting,
