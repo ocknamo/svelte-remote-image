@@ -5,9 +5,8 @@ import { Image } from '$lib/index.js'
 const optimazerPrefix = 'https://nostr-image-optimizer.ocknamo.com/image/'
 const originalImageUrl =
 	'https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp'
-const invalidImageUrl =
-	'https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/not.webp'
-
+const failbackImageUrl =
+	'https://ocknamo.com/static/0bbd27c7f38d84c4ae95b9c81e17693c/0fe81/I_love_Bitcoin.webp'
 const src: ImageSrc = {
 	w: 800,
 	img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
@@ -31,7 +30,7 @@ const src: ImageSrc = {
 			w: 800,
 		},
 	],
-	failback: originalImageUrl,
+	failback: [originalImageUrl, failbackImageUrl],
 	alt: 'blog top',
 	placeholder: { dataUri: '', color: '#c5c5c5' },
 	blur: true,
@@ -60,7 +59,7 @@ const blurFalseSrc: ImageSrc = {
 			w: 800,
 		},
 	],
-	failback: originalImageUrl,
+	failback: [originalImageUrl, failbackImageUrl],
 	alt: 'blog top',
 	placeholder: { dataUri: '', color: '#c5c5c5' },
 	blur: false,

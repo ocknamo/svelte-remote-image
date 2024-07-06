@@ -60,24 +60,18 @@ Sample code.
 The image component renders into:
 
 ```
-<div class="picture-wrapper s-wHckl4XSACcy" style="background-color: #c5c5c5">
-  <picture class="s-wHckl4XSACcy">
-    <source
-      srcset="https://nostr-image-optimizer.ocknamo.com/image/width=1600,quality=50,format=webp/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 1600w, https://nostr-image-optimizer.ocknamo.com/image/width=800,quality=50,format=webp/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 800w"
-      type="image/webp" class="s-wHckl4XSACcy">
-    <source
-      srcset="https://nostr-image-optimizer.ocknamo.com/image/width=1600,quality=50,format=jpeg/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 1600w, https://nostr-image-optimizer.ocknamo.com/image/width=800,quality=50,format=jpeg/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 800w"
-      type="image/jpeg" class="s-wHckl4XSACcy"> <img width="800" style="" class="image-blur-loading s-wHckl4XSACcy"
-      src="https://nostr-image-optimizer.ocknamo.com/image/width=1600,quality=70,format=webp/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp"
-      alt="blog top" loading="lazy">
-  </picture>
-</div>
-
-<!-- css -->
-.picture-wrapper.s-wHckl4XSACcy {
-  width: fit-content;
-  height: fit-content;
-}
+<picture>
+	<source
+		srcset="https://nostr-image-optimizer.ocknamo.com/image/width=1600,quality=50,format=webp/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 1600w, https://nostr-image-optimizer.ocknamo.com/image/width=800,quality=50,format=webp/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 800w"
+		type="image/webp">
+	<source
+		srcset="https://nostr-image-optimizer.ocknamo.com/image/width=1600,quality=50,format=jpeg/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 1600w, https://nostr-image-optimizer.ocknamo.com/image/width=800,quality=50,format=jpeg/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 800w"
+		type="image/jpeg"> <img width="800"
+		style="max-width: 100%; background-color: '#c5c5c5'; display: inline;"
+		class="image-blur-loaded"
+		src="https://nostr-image-optimizer.ocknamo.com/image/width=1600,quality=70,format=webp/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp"
+		alt="blog top" loading="lazy">
+</picture>
 ```
 
 Inspired by [svelte-img](https://github.com/zerodevx/svelte-img?tab=readme-ov-file#remote-images-from-an-api).
@@ -86,42 +80,54 @@ Inspired by [svelte-img](https://github.com/zerodevx/svelte-img?tab=readme-ov-fi
 
 ### ImageSrc
 
-- img: string
-  - image url.
+#### img: string
 
-- w: number
-  - image width.
+Image url.
 
-- h?: number
-  - image height.
+#### w: number
+  
+Image width.
 
-- webp?: Srcset[]
-  - image source for webp.
+#### h?: number
 
-- jpeg?: Srcset[]
-  - image source for jpeg.
+Image height.
 
-- png?: Srcset[]
-  - image source for png.
+#### webp?: Srcset[]
 
-- failback: string
-  - failback image url.
+Image sources for webp.
 
-- alt: string
-  - alt
+#### jpeg?: Srcset[]
 
-- placeholder?: { dataUri?: string; color?: string }
-  - Image data and background color for fastest display.
+Image sources for jpeg.
 
-- blur?: boolean
-  - Whether to use the blur effect when displaying the image.
+#### png?: Srcset[]
 
-### Srcset
+Image sources for png.
+
+#### failback: string[]
+
+Failback image urls.
+The order is important because the images are tested in order from the top of the array.
+
+#### alt: string
+
+Alt text for image.
+
+#### placeholder?: { dataUri?: string; color?: string }
+
+Image data and background color for fastest display.
+
+#### blur?: boolean
+  
+Whether to use the blur effect when displaying the image.
+Default false.
+
+#### Srcset
 
 - src: string
   - Image URL.
 - w: number
-  - width to display.
+  - Width of actual image.
 
 ## Developing
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+import { fail } from '@sveltejs/kit'
 import type { ImageSrc } from './image.type.js'
 
 export let src: ImageSrc
@@ -21,12 +22,27 @@ const handleImgError = (e: Event) => {
 	}
 
 	const img = e.currentTarget as HTMLImageElement
-	img.style.display = 'none'
+
+	let failbackUrl: string | undefined = undefined
+
+	const index = src.failback.findIndex(
+		(url) => new URL(url).toString() === new URL(img.src).toString(),
+	)
+	if (index === -1) {
+		failbackUrl = src.failback[0]
+	} else {
+		failbackUrl = src.failback[index + 1]
+		;[]
+	}
+
+	if (!failbackUrl) {
+		return
+	}
 
 	// failback
 	src = {
 		...src,
-		img: src.failback,
+		img: failbackUrl,
 		webp: [],
 		jpeg: [],
 		png: [],
