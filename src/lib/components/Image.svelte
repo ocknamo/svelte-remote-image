@@ -1,7 +1,7 @@
 <script lang="ts">
 import { browser } from '$app/environment'
 import type { ImageSrc } from './image.type.js'
-import { afterUpdate, tick } from 'svelte'
+import { afterUpdate } from 'svelte'
 
 export let src: ImageSrc
 export let style = ''
@@ -36,9 +36,6 @@ afterUpdate(async () => {
 	if (!img) {
 		return
 	}
-
-	// Wait changing component.
-	await tick()
 
 	// Image load success check.
 	if (img.naturalWidth !== 0 && img.naturalHeight !== 0) {
