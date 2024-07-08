@@ -5,8 +5,8 @@ import { afterUpdate } from 'svelte'
 
 export let src: ImageSrc
 export let style = ''
-export const alt = ''
-export const title = ''
+export const alt: string = ''
+export const title: string = ''
 
 const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
 const getImgElement = () =>
