@@ -1,32 +1,46 @@
 <script lang="ts">
-import { fail } from '@sveltejs/kit'
+import { browser } from '$app/environment'
 import type { ImageSrc } from './image.type.js'
-import { afterUpdate } from 'svelte'
+import { afterUpdate, tick } from 'svelte'
 
 export let src: ImageSrc
 export let style = ''
 
 const imgId = `svelte-remote-image-${src.alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
+const getImgElement = () =>
+	browser ? (document.getElementById(imgId) as HTMLImageElement | null) : null
 
 let loadStatus: 'loading' | 'loaded' = 'loading'
+$: {
+	loadStatus = 'loading'
 
-if (src.placeholder) {
-	if (src.placeholder.dataUri) {
-		style = `${style} background: url(${src.placeholder.dataUri}) no-repeat center/cover;`
+	if (src.placeholder) {
+		if (src.placeholder.dataUri) {
+			style = `${style} background: url(${src.placeholder.dataUri}) no-repeat center/cover;`
+		}
+		if (src.placeholder.color) {
+			style = `${style} background-color: ${src.placeholder.color};`
+		}
 	}
-	if (src.placeholder.color) {
-		style = `${style} background-color: ${src.placeholder.color};`
+
+	const img = getImgElement()
+
+	if (img) {
+		img.style.visibility = 'hidden'
 	}
 }
 
-afterUpdate(() => {
+afterUpdate(async () => {
 	const img = getImgElement()
 
 	if (!img) {
 		return
 	}
 
-	// Image load success.
+	// Wait changing component.
+	await tick()
+
+	// Image load success check.
 	if (img.naturalWidth !== 0 && img.naturalHeight !== 0) {
 		img.style.visibility = 'visible'
 		loadStatus = 'loaded'
@@ -47,7 +61,7 @@ const handleImgError = (e?: Event) => {
 		return
 	}
 
-	img.style.visibility = 'hiddin'
+	img.style.visibility = 'hidden'
 
 	let failbackUrl: string | undefined = undefined
 
@@ -74,7 +88,7 @@ const handleImgError = (e?: Event) => {
 		placeholder: {
 			color: src.placeholder?.color,
 			dataUri: src.placeholder?.dataUri,
-		}
+		},
 	}
 }
 
@@ -83,9 +97,6 @@ const handleLoaded = (e: Event) => {
 	img.style.visibility = 'visible'
 	loadStatus = 'loaded'
 }
-
-const getImgElement = () =>
-	document.getElementById(imgId) as HTMLImageElement | null
 </script>
 
 <picture>
@@ -103,7 +114,7 @@ const getImgElement = () =>
 		width={src.w}
 		height={src.h}
 		{style}
-		class={src.blur ? `svelte-remote-image image-blur-${loadStatus}` : 'svelte-remote-image'}
+		class={src.blur ? `image-blur-${loadStatus}` : ''}
 		src={src.img}
 		alt={src.alt}
 		on:error={handleImgError}
@@ -113,10 +124,6 @@ const getImgElement = () =>
 </picture>
 
 <style>
-	img.svelte-remote-image {
-		/* initial value */
-		visibility: hidden;
-	}
 	.image-blur-loading {
 		animation:
 			0.5s linear 0s normal waiting,
