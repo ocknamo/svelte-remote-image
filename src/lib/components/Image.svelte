@@ -5,6 +5,8 @@ import { afterUpdate } from 'svelte'
 
 export let src: ImageSrc
 export let style = ''
+export const alt = ''
+export const title = ''
 
 const imgId = `svelte-remote-image-${src.alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
 const getImgElement = () =>
@@ -113,7 +115,8 @@ const handleLoaded = (e: Event) => {
 		{style}
 		class={src.blur ? `image-blur-${loadStatus}` : ''}
 		src={src.img}
-		alt={src.alt}
+		alt={alt}
+		title={title}
 		on:error={handleImgError}
 		on:load={handleLoaded}
 		loading="lazy"

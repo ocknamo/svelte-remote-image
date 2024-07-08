@@ -11,7 +11,6 @@ export interface ImageSrc {
 	jpeg?: Srcset[]
 	png?: Srcset[]
 	failback: string[]
-	alt: string
 	placeholder?: {
 		dataUri?: string
 		color?: string
