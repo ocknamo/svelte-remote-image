@@ -8,7 +8,7 @@ export let style = ''
 export const alt = ''
 export const title = ''
 
-const imgId = `svelte-remote-image-${src.alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
+const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
 const getImgElement = () =>
 	browser ? (document.getElementById(imgId) as HTMLImageElement | null) : null
 
