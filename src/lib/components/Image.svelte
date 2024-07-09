@@ -54,6 +54,10 @@ const handleImgError = (e?: Event) => {
 		return
 	}
 
+	if (!src.failback) {
+		return
+	}
+
 	const img = getImgElement()
 
 	if (!img) {

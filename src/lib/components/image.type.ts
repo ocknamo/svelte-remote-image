@@ -10,7 +10,7 @@ export interface ImageSrc {
 	webp?: Srcset[]
 	jpeg?: Srcset[]
 	png?: Srcset[]
-	failback: string[]
+	failback?: string[]
 	placeholder?: {
 		dataUri?: string
 		color?: string
