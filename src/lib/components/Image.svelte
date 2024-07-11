@@ -35,7 +35,7 @@ $: {
 afterUpdate(async () => {
 	const img = getImgElement()
 
-	if (!img) {
+	if (!img || !img.complete) {
 		return
 	}
 
@@ -82,17 +82,7 @@ const handleImgError = (e?: Event) => {
 	}
 
 	// failback
-	src = {
-		...src,
-		img: failbackUrl,
-		webp: [],
-		jpeg: [],
-		png: [],
-		placeholder: {
-			color: src.placeholder?.color,
-			dataUri: src.placeholder?.dataUri,
-		},
-	}
+	img.src = failbackUrl
 }
 
 const handleLoaded = (e: Event) => {
