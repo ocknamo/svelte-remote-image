@@ -35,7 +35,7 @@ $: {
 afterUpdate(async () => {
 	const img = getImgElement()
 
-	if (!img || !img.complete) {
+	if (!img) {
 		return
 	}
 
@@ -66,6 +66,10 @@ const handleImgError = (e?: Event) => {
 
 	img.style.visibility = 'hidden'
 
+	if (!img.complete) {
+		return
+	}
+
 	let failbackUrl: string | undefined = undefined
 
 	const index = src.failback.findIndex(
@@ -82,7 +86,17 @@ const handleImgError = (e?: Event) => {
 	}
 
 	// failback
-	img.src = failbackUrl
+	src = {
+		...src,
+		img: failbackUrl,
+		webp: [],
+		jpeg: [],
+		png: [],
+		placeholder: {
+			color: src.placeholder?.color,
+			dataUri: src.placeholder?.dataUri,
+		},
+	}
 }
 
 const handleLoaded = (e: Event) => {
