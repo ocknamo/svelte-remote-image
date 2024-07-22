@@ -1,4 +1,5 @@
-export * from './components/image.type'
-import Image from './components/Image.svelte'
+export * from './components/type'
+import Picture from './components/Picture.svelte'
+import Img from './components/Picture.svelte'
 
-export { Image }
+export { Picture, Img }

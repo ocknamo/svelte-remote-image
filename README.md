@@ -6,7 +6,7 @@ Display optimized, responsive and progressive images for Svelte.
 With remote image URL of CDN or other means.
 
 - Fade-in and blur on image reveal.
-- An image URL can be set to failback if an image cannot be retrieved from the source URL due to an error.
+- An image URL can be set to fallback if an image cannot be retrieved from the source URL due to an error.
 - A pre-rendered low-quality dataURI can be set as a placeholder.
 
 
@@ -47,7 +47,7 @@ Sample code.
 			{ src: `${optimazerPrefix}width=1600,quality=50,format=jpeg/${originalImageUrl}`, w: 1600 },
 			{ src: `${optimazerPrefix}width=800,quality=50,format=jpeg/${originalImageUrl}`, w: 800 }
 		],
-		failback: originalImageUrl,
+		fallback: originalImageUrl,
 		alt: 'blog top',
 		placeholder: { dataUri: '', color: '#c5c5c5' },
 		blur: true
@@ -104,7 +104,7 @@ Image sources for jpeg.
 
 Image sources for png.
 
-#### failback: string[]
+#### fallback: string[]
 
 Failback image urls.
 The order is important because the images are tested in order from the top of the array.

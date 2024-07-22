@@ -3,17 +3,25 @@ export interface Srcset {
 	w: number
 }
 
-export interface ImageSrc {
+export interface PictureSrc {
 	img: string
 	w?: number
 	h?: number
 	webp?: Srcset[]
 	jpeg?: Srcset[]
 	png?: Srcset[]
-	failback?: string[]
+	fallback?: string[]
 	placeholder?: {
 		dataUri?: string
 		color?: string
 	}
 	blur?: boolean
+}
+
+export interface ImgSrc {
+	img: string
+	srssets: Srcset[]
+	w?: number
+	h?: number
+	fallback?: string[]
 }
