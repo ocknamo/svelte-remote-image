@@ -1,4 +1,4 @@
 // Reexport your entry components here
 
-import Image from './components/Image.svelte'
-export { Image }
+import Picture from './components/Picture.svelte'
+export { Picture }

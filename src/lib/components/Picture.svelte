@@ -1,9 +1,9 @@
 <script lang="ts">
 import { browser } from '$app/environment'
-import type { ImageSrc } from './image.type.js'
+import type { PictureSrc } from './picture.type.js'
 import { afterUpdate } from 'svelte'
 
-export let src: ImageSrc
+export let src: PictureSrc
 export let style = ''
 export const alt: string = ''
 export const title: string = ''

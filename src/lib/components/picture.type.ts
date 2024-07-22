@@ -3,7 +3,7 @@ export interface Srcset {
 	w: number
 }
 
-export interface ImageSrc {
+export interface PictureSrc {
 	img: string
 	w?: number
 	h?: number

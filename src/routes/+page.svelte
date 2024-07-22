@@ -1,13 +1,13 @@
 <script lang="ts">
-import type { ImageSrc } from '$lib/components/image.type.js'
-import { Image } from '$lib/index.js'
+import type { PictureSrc } from '$lib/components/picture.type.js'
+import { Picture } from '$lib/index.js'
 
 const optimazerPrefix = 'https://nostr-image-optimizer.ocknamo.com/image/'
 const originalImageUrl =
 	'https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp'
 const failbackImageUrl =
 	'https://ocknamo.com/static/0bbd27c7f38d84c4ae95b9c81e17693c/0fe81/I_love_Bitcoin.webp'
-const src: ImageSrc = {
+const src: PictureSrc = {
 	w: 800,
 	img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
 	webp: [
@@ -31,12 +31,11 @@ const src: ImageSrc = {
 		},
 	],
 	failback: [originalImageUrl, failbackImageUrl],
-	alt: 'blog top',
 	placeholder: { dataUri: '', color: '#c5c5c5' },
 	blur: true,
 }
 
-const blurFalseSrc: ImageSrc = {
+const blurFalseSrc: PictureSrc = {
 	w: 800,
 	img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
 	webp: [
@@ -60,7 +59,6 @@ const blurFalseSrc: ImageSrc = {
 		},
 	],
 	failback: [originalImageUrl, failbackImageUrl],
-	alt: 'blog top',
 	placeholder: { dataUri: '', color: '#c5c5c5' },
 	blur: false,
 }
@@ -70,7 +68,7 @@ const blurFalseSrc: ImageSrc = {
 <p>Display optimized images using CDN or other means.</p>
 
 <div>
-	<Image {src} style='max-width: 100%;'/>
+	<Picture {src} style='max-width: 100%;'/>
 </div>
 <hr />
 
@@ -78,14 +76,14 @@ const blurFalseSrc: ImageSrc = {
 	<p>
 		blur: true
 	</p>
-	<Image {src} style='max-width: 400px; width: 100%' ></Image>
+	<Picture {src} style='max-width: 400px; width: 100%' />
 </div>
 
 <div>
 	<p>
 		blur: false
 	</p>
-	<Image src={blurFalseSrc} style='max-width: 400px; width: 100%' ></Image>
+	<Picture src={blurFalseSrc} style='max-width: 400px; width: 100%' />
 </div>
 
 <a href="https://github.com/ocknamo/svelte-remote-image" target="_blank" rel="noopener noreferrer">github</a>
