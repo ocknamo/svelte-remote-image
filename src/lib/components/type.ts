@@ -10,7 +10,7 @@ export interface PictureSrc {
 	webp?: Srcset[]
 	jpeg?: Srcset[]
 	png?: Srcset[]
-	failback?: string[]
+	fallback?: string[]
 	placeholder?: {
 		dataUri?: string
 		color?: string
@@ -23,5 +23,5 @@ export interface ImgSrc {
 	srssets: Srcset[]
 	w?: number
 	h?: number
-	failback?: string[]
+	fallback?: string[]
 }

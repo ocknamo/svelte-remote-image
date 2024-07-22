@@ -34,7 +34,7 @@ const handleImgError = (e?: Event) => {
 		return
 	}
 
-	if (!src.failback) {
+	if (!src.fallback) {
 		return
 	}
 
@@ -46,25 +46,25 @@ const handleImgError = (e?: Event) => {
 
 	img.style.visibility = 'hidden'
 
-	let failbackUrl: string | undefined = undefined
+	let fallbackUrl: string | undefined = undefined
 
-	const index = src.failback.findIndex(
+	const index = src.fallback.findIndex(
 		(url) => new URL(url).toString() === new URL(img.src).toString(),
 	)
 	if (index === -1) {
-		failbackUrl = src.failback[0]
+		fallbackUrl = src.fallback[0]
 	} else {
-		failbackUrl = src.failback[index + 1]
+		fallbackUrl = src.fallback[index + 1]
 	}
 
-	if (!failbackUrl) {
+	if (!fallbackUrl) {
 		return
 	}
 
-	// failback
+	// fallback
 	src = {
 		...src,
-		img: failbackUrl,
+		img: fallbackUrl,
 		srssets: [],
 	}
 }

@@ -7,7 +7,7 @@ const originalImageUrl =
 	'https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp'
 const invalidImageUrl =
 	'https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.web'
-const failbackImageUrl =
+const fallbackImageUrl =
 	'https://ocknamo.com/static/0bbd27c7f38d84c4ae95b9c81e17693c/0fe81/I_love_Bitcoin.webp'
 
 const imgSrc: ImgSrc = {
@@ -23,7 +23,7 @@ const imgSrc: ImgSrc = {
 			w: 800,
 		},
 	],
-	failback: [originalImageUrl, failbackImageUrl],
+	fallback: [originalImageUrl, fallbackImageUrl],
 }
 
 const fallImageSrc: ImgSrc = {
@@ -39,7 +39,7 @@ const fallImageSrc: ImgSrc = {
 			w: 800,
 		},
 	],
-	failback: [invalidImageUrl, failbackImageUrl],
+	fallback: [invalidImageUrl, fallbackImageUrl],
 }
 
 const src: PictureSrc = {
@@ -65,7 +65,7 @@ const src: PictureSrc = {
 			w: 800,
 		},
 	],
-	failback: [originalImageUrl, failbackImageUrl],
+	fallback: [originalImageUrl, fallbackImageUrl],
 	placeholder: { dataUri: '', color: '#c5c5c5' },
 	blur: true,
 }
@@ -93,7 +93,7 @@ const blurFalseSrc: PictureSrc = {
 			w: 800,
 		},
 	],
-	failback: [originalImageUrl, failbackImageUrl],
+	fallback: [originalImageUrl, fallbackImageUrl],
 	placeholder: { dataUri: '', color: '#c5c5c5' },
 	blur: false,
 }
