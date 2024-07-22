@@ -17,3 +17,11 @@ export interface PictureSrc {
 	}
 	blur?: boolean
 }
+
+export interface ImgSrc {
+	img: string
+	srssets: Srcset[]
+	w?: number
+	h?: number
+	failback?: string[]
+}
