@@ -13,6 +13,8 @@ const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math
 const getImgElement = () =>
 	browser ? (document.getElementById(imgId) as HTMLImageElement | null) : null
 
+$: imgSrc = src
+
 afterUpdate(async () => {
 	const img = getImgElement()
 
@@ -34,7 +36,7 @@ const handleImgError = (e?: Event) => {
 		return
 	}
 
-	if (!src.fallback) {
+	if (!imgSrc.fallback) {
 		return
 	}
 
@@ -48,13 +50,13 @@ const handleImgError = (e?: Event) => {
 
 	let fallbackUrl: string | undefined = undefined
 
-	const index = src.fallback.findIndex(
+	const index = imgSrc.fallback.findIndex(
 		(url) => new URL(url).toString() === new URL(img.src).toString(),
 	)
 	if (index === -1) {
-		fallbackUrl = src.fallback[0]
+		fallbackUrl = imgSrc.fallback[0]
 	} else {
-		fallbackUrl = src.fallback[index + 1]
+		fallbackUrl = imgSrc.fallback[index + 1]
 	}
 
 	if (!fallbackUrl) {
@@ -62,10 +64,10 @@ const handleImgError = (e?: Event) => {
 	}
 
 	// fallback
-	src = {
-		...src,
+	imgSrc = {
+		...imgSrc,
 		img: fallbackUrl,
-		srcsets: [],
+		srcsets: undefined,
 	}
 }
 
@@ -77,11 +79,11 @@ const handleLoaded = (e: Event) => {
 
 	<img
 		id={imgId}
-		width={src.w}
-		height={src.h}
+		width={imgSrc.w}
+		height={imgSrc.h}
 		{style}
-		src={src.img}
-		srcset={src.srcsets ? src.srcsets.map((s) => `${s.src} ${s.w}w`).join(', ') : ''}
+		src={imgSrc.img}
+		srcset={imgSrc.srcsets ? imgSrc.srcsets.map((s) => `${s.src} ${s.w}w`).join(', ') : ''}
 		alt={alt}
 		title={title}
 		on:error={handleImgError}
