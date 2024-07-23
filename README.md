@@ -21,12 +21,14 @@ $ npm i svelte-remote-image
 And import components and types. 
 
 ```
-	import { Image, type ImageSrc } from "svelte-remote-image";
+	import { Img, Picture, type ImgSrc, type PictureSrc } from "svelte-remote-image";
 ```
 
 ## How to use
 
 Sample code.
+
+### Img
 
 ```
 <script lang="ts">
@@ -36,45 +38,38 @@ Sample code.
   const optimazerPrefix = 'https://nostr-image-optimizer.ocknamo.com/image/';
   const originalImageUrl = 'https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp'
 
-	let src: ImageSrc = {
-		w: 800,
-		img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
-		webp: [
-			{ src: `${optimazerPrefix}width=1600,quality=50,format=webp/${originalImageUrl}`, w: 1600 },
-			{ src: `${optimazerPrefix}width=800,quality=50,format=webp/${originalImageUrl}`, w: 800 }
-		],
-		jpeg: [
-			{ src: `${optimazerPrefix}width=1600,quality=50,format=jpeg/${originalImageUrl}`, w: 1600 },
-			{ src: `${optimazerPrefix}width=800,quality=50,format=jpeg/${originalImageUrl}`, w: 800 }
-		],
-		fallback: originalImageUrl,
-		alt: 'blog top',
-		placeholder: { dataUri: '', color: '#c5c5c5' },
-		blur: true
-	};
+const imgSrc: ImgSrc = {
+	w: 800,
+	img: `https://ocknamo.com/cat.jpg`,
+	srssets: [
+		{
+			src: `https://ocknamo.com/cat_1600.jpg`,
+			w: 1600,
+		},
+		{
+			src: `https://ocknamo.com/cat_800.jpg`,
+			w: 800,
+		},
+	],
+	fallback: ['https://ocknamo.com/cat_fallback.jpg'],
+}
 </script>
 
-<Image {src} />
+<Img src={imgSrc} style='max-width: 400px; max-width: 80%;' />
 ```
 
 The image component renders into:
 
 ```
-<picture>
-	<source
-		srcset="https://nostr-image-optimizer.ocknamo.com/image/width=1600,quality=50,format=webp/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 1600w, https://nostr-image-optimizer.ocknamo.com/image/width=800,quality=50,format=webp/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 800w"
-		type="image/webp">
-	<source
-		srcset="https://nostr-image-optimizer.ocknamo.com/image/width=1600,quality=50,format=jpeg/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 1600w, https://nostr-image-optimizer.ocknamo.com/image/width=800,quality=50,format=jpeg/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp 800w"
-		type="image/jpeg"> <img width="800"
-		style="max-width: 100%; background-color: '#c5c5c5'; display: inline;"
-		class="image-blur-loaded"
-		src="https://nostr-image-optimizer.ocknamo.com/image/width=1600,quality=70,format=webp/https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp"
-		alt="blog top" loading="lazy">
-</picture>
+<img id="svelte-remote-image--6188058" width="800" style="max-width: 80%; visibility: hidden;"
+	src="https://ocknamo.com/cat_fallback.jpg" srcset="" alt="" title="" loading="lazy" class="s-6LbhuE7J5MgN">
 ```
 
 Inspired by [svelte-img](https://github.com/zerodevx/svelte-img?tab=readme-ov-file#remote-images-from-an-api).
+
+### Picture
+
+TBD
 
 ## Config
 
@@ -91,6 +86,10 @@ Image width.
 #### h?: number
 
 Image height.
+
+#### srssets: Srcset[]
+
+Image sources for Img component.
 
 #### webp?: Srcset[]
 
