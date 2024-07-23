@@ -20,7 +20,7 @@ export interface PictureSrc {
 
 export interface ImgSrc {
 	img: string
-	srssets: Srcset[]
+	srcsets?: Srcset[]
 	w?: number
 	h?: number
 	fallback?: string[]

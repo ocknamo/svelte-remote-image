@@ -65,7 +65,7 @@ const handleImgError = (e?: Event) => {
 	src = {
 		...src,
 		img: fallbackUrl,
-		srssets: [],
+		srcsets: [],
 	}
 }
 
@@ -81,7 +81,7 @@ const handleLoaded = (e: Event) => {
 		height={src.h}
 		{style}
 		src={src.img}
-		srcset={src.srssets.map((s) => `${s.src} ${s.w}w`).join(', ')}
+		srcset={src.srcsets ? src.srcsets.map((s) => `${s.src} ${s.w}w`).join(', ') : ''}
 		alt={alt}
 		title={title}
 		on:error={handleImgError}
