@@ -48,6 +48,10 @@ const handleImgError = (e?: Event) => {
 
 	img.style.visibility = 'hidden'
 
+	if (!img.complete) {
+		return
+	}
+
 	let fallbackUrl: string | undefined = undefined
 
 	const index = imgSrc.fallback.findIndex(
