@@ -13,7 +13,16 @@ const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math
 const getImgElement = () =>
 	browser ? (document.getElementById(imgId) as HTMLImageElement | null) : null
 
-$: imgSrc = src
+let imgSrc: ImgSrc
+
+$: {
+	imgSrc = src
+	const img = getImgElement()
+
+	if (img) {
+		img.style.visibility = 'hidden'
+	}
+}
 
 afterUpdate(async () => {
 	const img = getImgElement()
