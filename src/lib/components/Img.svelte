@@ -13,51 +13,40 @@ const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math
 const getImgElement = () =>
 	browser ? (document.getElementById(imgId) as HTMLImageElement | null) : null
 
+let visibilityStyle: 'invisible' | 'visible' = 'invisible'
+
 let imgSrc: ImgSrc
 
 $: {
 	imgSrc = src
-	const img = getImgElement()
-
-	if (img) {
-		img.style.visibility = 'hidden'
-	}
+	visibilityStyle = 'invisible'
 }
 
 afterUpdate(async () => {
 	const img = getImgElement()
 
-	if (!img) {
+	if (!img || !img.complete) {
 		return
 	}
 
 	// Image load success check.
 	if (img.naturalWidth !== 0 && img.naturalHeight !== 0) {
-		img.style.visibility = 'visible'
+		visibilityStyle = 'visible'
 	} else {
 		// Failed
 		handleImgError()
 	}
 })
 
-const handleImgError = (e?: Event) => {
-	if (e && e.type !== 'error') {
-		return
-	}
-
+const handleImgError = () => {
 	if (!imgSrc.fallback) {
 		return
 	}
+	visibilityStyle = 'invisible'
 
 	const img = getImgElement()
 
 	if (!img) {
-		return
-	}
-
-	img.style.visibility = 'hidden'
-
-	if (!img.complete) {
 		return
 	}
 
@@ -84,9 +73,8 @@ const handleImgError = (e?: Event) => {
 	}
 }
 
-const handleLoaded = (e: Event) => {
-	const img = e.currentTarget as HTMLImageElement
-	img.style.visibility = 'visible'
+const handleLoaded = () => {
+	visibilityStyle = 'visible'
 }
 </script>
 
@@ -95,6 +83,7 @@ const handleLoaded = (e: Event) => {
 		width={imgSrc.w}
 		height={imgSrc.h}
 		{style}
+		class={visibilityStyle}
 		src={imgSrc.img}
 		srcset={imgSrc.srcsets ? imgSrc.srcsets.map((s) => `${s.src} ${s.w}w`).join(', ') : ''}
 		alt={alt}
@@ -105,7 +94,10 @@ const handleLoaded = (e: Event) => {
 	/>
 
 <style>
-	img {
+	.visible {
+		visibility: visible;
+	}
+	.invisible {
 		visibility: hidden;
 	}
 </style>
