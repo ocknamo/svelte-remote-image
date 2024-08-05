@@ -1,102 +1,102 @@
 <script lang="ts">
-	import type { ImgSrc, PictureSrc } from "$lib/components/type.js";
-	import { Picture, Img } from "$lib/index.js";
+import type { ImgSrc, PictureSrc } from '$lib/components/type.js'
+import { Picture, Img } from '$lib/index.js'
 
-	const optimazerPrefix = "https://nostr-image-optimizer.ocknamo.com/image/";
-	const originalImageUrl =
-		"https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp";
-	const invalidImageUrl =
-		"https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.web";
-	const fallbackImageUrl =
-		"https://ocknamo.com/static/0bbd27c7f38d84c4ae95b9c81e17693c/0fe81/I_love_Bitcoin.webp";
+const optimazerPrefix = 'https://nostr-image-optimizer.ocknamo.com/image/'
+const originalImageUrl =
+	'https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.webp'
+const invalidImageUrl =
+	'https://ocknamo.com/static/b84d6366deec053ff3fa77df01a54464/dccd3/cat.web'
+const fallbackImageUrl =
+	'https://ocknamo.com/static/0bbd27c7f38d84c4ae95b9c81e17693c/0fe81/I_love_Bitcoin.webp'
 
-	const imgSrc: ImgSrc = {
-		w: 800,
-		img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
-		srcsets: [
-			{
-				src: `${optimazerPrefix}width=1600,quality=50,format=webp/${originalImageUrl}`,
-				w: 1600,
-			},
-			{
-				src: `${optimazerPrefix}width=800,quality=50,format=webp/${originalImageUrl}`,
-				w: 800,
-			},
-		],
-		fallback: [originalImageUrl, fallbackImageUrl],
-	};
+const imgSrc: ImgSrc = {
+	w: 800,
+	img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
+	srcsets: [
+		{
+			src: `${optimazerPrefix}width=1600,quality=50,format=webp/${originalImageUrl}`,
+			w: 1600,
+		},
+		{
+			src: `${optimazerPrefix}width=800,quality=50,format=webp/${originalImageUrl}`,
+			w: 800,
+		},
+	],
+	fallback: [originalImageUrl, fallbackImageUrl],
+}
 
-	const fallImageSrc: ImgSrc = {
-		w: 800,
-		img: `${optimazerPrefix}width=1600,quality=70,format=webp/${invalidImageUrl}`,
-		srcsets: [
-			{
-				src: `${optimazerPrefix}width=1600,quality=50,format=webp/${invalidImageUrl}`,
-				w: 1600,
-			},
-			{
-				src: `${optimazerPrefix}width=800,quality=50,format=webp/${invalidImageUrl}`,
-				w: 800,
-			},
-		],
-		fallback: [invalidImageUrl, fallbackImageUrl],
-	};
+const fallImageSrc: ImgSrc = {
+	w: 800,
+	img: `${optimazerPrefix}width=1600,quality=70,format=webp/${invalidImageUrl}`,
+	srcsets: [
+		{
+			src: `${optimazerPrefix}width=1600,quality=50,format=webp/${invalidImageUrl}`,
+			w: 1600,
+		},
+		{
+			src: `${optimazerPrefix}width=800,quality=50,format=webp/${invalidImageUrl}`,
+			w: 800,
+		},
+	],
+	fallback: [invalidImageUrl, fallbackImageUrl],
+}
 
-	const src: PictureSrc = {
-		w: 800,
-		img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
-		webp: [
-			{
-				src: `${optimazerPrefix}width=1600,quality=50,format=webp/${originalImageUrl}`,
-				w: 1600,
-			},
-			{
-				src: `${optimazerPrefix}width=800,quality=50,format=webp/${originalImageUrl}`,
-				w: 800,
-			},
-		],
-		jpeg: [
-			{
-				src: `${optimazerPrefix}width=1600,quality=50,format=jpeg/${originalImageUrl}`,
-				w: 1600,
-			},
-			{
-				src: `${optimazerPrefix}width=800,quality=50,format=jpeg/${originalImageUrl}`,
-				w: 800,
-			},
-		],
-		fallback: [originalImageUrl, fallbackImageUrl],
-		placeholder: { dataUri: "", color: "#c5c5c5" },
-		blur: true,
-	};
+const src: PictureSrc = {
+	w: 800,
+	img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
+	webp: [
+		{
+			src: `${optimazerPrefix}width=1600,quality=50,format=webp/${originalImageUrl}`,
+			w: 1600,
+		},
+		{
+			src: `${optimazerPrefix}width=800,quality=50,format=webp/${originalImageUrl}`,
+			w: 800,
+		},
+	],
+	jpeg: [
+		{
+			src: `${optimazerPrefix}width=1600,quality=50,format=jpeg/${originalImageUrl}`,
+			w: 1600,
+		},
+		{
+			src: `${optimazerPrefix}width=800,quality=50,format=jpeg/${originalImageUrl}`,
+			w: 800,
+		},
+	],
+	fallback: [originalImageUrl, fallbackImageUrl],
+	placeholder: { dataUri: '', color: '#c5c5c5' },
+	blur: true,
+}
 
-	const blurFalseSrc: PictureSrc = {
-		w: 800,
-		img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
-		webp: [
-			{
-				src: `${optimazerPrefix}width=1600,quality=50,format=webp/${originalImageUrl}`,
-				w: 1600,
-			},
-			{
-				src: `${optimazerPrefix}width=800,quality=50,format=webp/${originalImageUrl}`,
-				w: 800,
-			},
-		],
-		jpeg: [
-			{
-				src: `${optimazerPrefix}width=1600,quality=50,format=jpeg/${originalImageUrl}`,
-				w: 1600,
-			},
-			{
-				src: `${optimazerPrefix}width=800,quality=50,format=jpeg/${originalImageUrl}`,
-				w: 800,
-			},
-		],
-		fallback: [originalImageUrl, fallbackImageUrl],
-		placeholder: { dataUri: "", color: "#c5c5c5" },
-		blur: false,
-	};
+const blurFalseSrc: PictureSrc = {
+	w: 800,
+	img: `${optimazerPrefix}width=1600,quality=70,format=webp/${originalImageUrl}`,
+	webp: [
+		{
+			src: `${optimazerPrefix}width=1600,quality=50,format=webp/${originalImageUrl}`,
+			w: 1600,
+		},
+		{
+			src: `${optimazerPrefix}width=800,quality=50,format=webp/${originalImageUrl}`,
+			w: 800,
+		},
+	],
+	jpeg: [
+		{
+			src: `${optimazerPrefix}width=1600,quality=50,format=jpeg/${originalImageUrl}`,
+			w: 1600,
+		},
+		{
+			src: `${optimazerPrefix}width=800,quality=50,format=jpeg/${originalImageUrl}`,
+			w: 800,
+		},
+	],
+	fallback: [originalImageUrl, fallbackImageUrl],
+	placeholder: { dataUri: '', color: '#c5c5c5' },
+	blur: false,
+}
 </script>
 
 <h1>Welcome to Svelte Remote Image</h1>

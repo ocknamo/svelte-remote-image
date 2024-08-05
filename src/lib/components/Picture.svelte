@@ -35,7 +35,7 @@ $: {
 afterUpdate(async () => {
 	const img = getImgElement()
 
-	if (!img) {
+	if (!img || !img.complete) {
 		return
 	}
 
@@ -49,11 +49,7 @@ afterUpdate(async () => {
 	}
 })
 
-const handleImgError = (e?: Event) => {
-	if (e && e.type !== 'error') {
-		return
-	}
-
+const handleImgError = () => {
 	if (!src.fallback) {
 		return
 	}
@@ -65,10 +61,6 @@ const handleImgError = (e?: Event) => {
 	}
 
 	img.style.visibility = 'hidden'
-
-	if (!img.complete) {
-		return
-	}
 
 	let fallbackUrl: string | undefined = undefined
 
