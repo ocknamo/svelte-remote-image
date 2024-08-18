@@ -95,9 +95,9 @@ const handleLoaded = () => {
 
 <style>
 	.visible {
-		visibility: visible;
+		opacity: 1;
 	}
 	.invisible {
-		visibility: hidden;
+		opacity: 0;
 	}
 </style>
