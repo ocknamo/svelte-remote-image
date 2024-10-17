@@ -4,10 +4,14 @@ import type { ImgSrc } from './type.js'
 import { afterUpdate } from 'svelte'
 
 export let src: ImgSrc
-// biome-ignore lint/suspicious/noImplicitAnyLet: This is component arg.
-export let style
 export const alt: string = ''
 export const title: string = ''
+
+// biome-ignore lint/style/useConst:
+export let style = ''
+// biome-ignore lint/style/useConst:
+let className = ''
+export { className as class }
 
 const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
 const getImgElement = () =>
@@ -83,7 +87,7 @@ const handleLoaded = () => {
 		width={imgSrc.w}
 		height={imgSrc.h}
 		{style}
-		class={visibilityStyle}
+		class={`${className} ${visibilityStyle}`}
 		src={imgSrc.img}
 		srcset={imgSrc.srcsets ? imgSrc.srcsets.map((s) => `${s.src} ${s.w}w`).join(', ') : ''}
 		alt={alt}

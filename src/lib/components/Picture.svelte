@@ -4,9 +4,13 @@ import type { PictureSrc } from './type.js'
 import { afterUpdate } from 'svelte'
 
 export let src: PictureSrc
-export let style = ''
 export const alt: string = ''
 export const title: string = ''
+
+export let style = ''
+// biome-ignore lint/style/useConst:
+let className = ''
+export { className as class }
 
 const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
 const getImgElement = () =>
@@ -113,7 +117,7 @@ const handleLoaded = (e: Event) => {
 		width={src.w}
 		height={src.h}
 		{style}
-		class={src.blur ? `image-blur-${loadStatus}` : ''}
+		class={src.blur ? `image-blur-${loadStatus} ${className}` : className}
 		src={src.img}
 		alt={alt}
 		title={title}

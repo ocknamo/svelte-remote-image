@@ -107,7 +107,7 @@ const blurFalseSrc: PictureSrc = {
 	<Img src={imgSrc} style="max-width: 400px; max-width: 80%;" />
 </div>
 <div>
-	<p>Img fall</p>
+	<p>Fallback image</p>
 	<Img src={fallImageSrc} style="max-width: 400px; max-width: 80%;" />
 </div>
 <div>
@@ -133,3 +133,21 @@ const blurFalseSrc: PictureSrc = {
 	target="_blank"
 	rel="noopener noreferrer">github</a
 >
+
+<div class="wrapper">
+	<p>Set style by CSS global class.</p>
+	<Img src={imgSrc} class="child-image" />
+</div>
+
+<a
+	href="https://github.com/ocknamo/svelte-remote-image"
+	target="_blank"
+	rel="noopener noreferrer">github</a
+>
+
+<style>
+	.wrapper :global(.child-image) {
+		max-width: 400px; max-width: 80%;
+		border-radius: 50px;
+	}
+</style>
