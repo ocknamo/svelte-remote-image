@@ -4,8 +4,10 @@ import type { PictureSrc } from './type.js'
 import { afterUpdate } from 'svelte'
 
 export let src: PictureSrc
-export const alt: string = ''
-export const title: string = ''
+// biome-ignore lint/style/useConst:
+export let alt = ''
+// biome-ignore lint/style/useConst:
+export let title = ''
 
 export let style = ''
 // biome-ignore lint/style/useConst:

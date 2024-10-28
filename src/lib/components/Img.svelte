@@ -4,8 +4,10 @@ import type { ImgSrc } from './type.js'
 import { afterUpdate } from 'svelte'
 
 export let src: ImgSrc
-export const alt: string = ''
-export const title: string = ''
+// biome-ignore lint/style/useConst:
+export let alt = ''
+// biome-ignore lint/style/useConst:
+export let title = ''
 
 // biome-ignore lint/style/useConst:
 export let style = ''
@@ -44,6 +46,7 @@ afterUpdate(async () => {
 
 const handleImgError = () => {
 	if (!imgSrc.fallback) {
+		visibilityStyle = 'visible'
 		return
 	}
 	visibilityStyle = 'invisible'
@@ -66,6 +69,7 @@ const handleImgError = () => {
 	}
 
 	if (!fallbackUrl) {
+		visibilityStyle = 'visible'
 		return
 	}
 
