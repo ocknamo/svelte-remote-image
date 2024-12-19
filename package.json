@@ -27,16 +27,15 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"svelte": "^4.0.0",
-		"@sveltejs/kit": "^2.0.0"
+		"svelte": "^4.0.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.8.1",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-cloudflare": "^4.4.1",
-		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/package": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"esm-env": "^1.2.1",
 		"publint": "^0.1.9",
 		"svelte": "^4.2.7",
 		"svelte-check": "^3.6.0",

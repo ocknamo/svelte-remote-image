@@ -1,5 +1,5 @@
 <script lang="ts">
-import { browser } from '$app/environment'
+import { BROWSER } from 'esm-env'
 import type { PictureSrc } from './type.js'
 import { afterUpdate } from 'svelte'
 
@@ -16,7 +16,7 @@ export { className as class }
 
 const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
 const getImgElement = () =>
-	browser ? (document.getElementById(imgId) as HTMLImageElement | null) : null
+	BROWSER ? (document.getElementById(imgId) as HTMLImageElement | null) : null
 
 let loadStatus: 'loading' | 'loaded' = 'loading'
 $: {
