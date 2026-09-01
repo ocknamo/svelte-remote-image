@@ -7,18 +7,56 @@
  * caller then omits the declaration entirely.
  */
 
-const cssColorPatterns = [
-	// #rgb / #rgba / #rrggbb / #rrggbbaa
-	/^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i,
-	// Named colors, `transparent`, `currentColor`.
-	/^[a-z]+$/i,
-	// rgb() / rgba() / hsl() / hsla() with numeric arguments only.
-	/^(?:rgb|rgba|hsl|hsla)\(\s*[0-9a-z.,%\s/+-]*\)$/i,
-]
+const hexColorPattern = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i
+
+// Named colors, `transparent`, `currentColor`.
+const keywordColorPattern = /^[a-z][a-z0-9-]*$/i
+
+// Function notation: `rgb()`, `hsl()`, `oklch()`, `color-mix()`, `var()`, ...
+// The argument list only allows characters that cannot end the declaration, so
+// the function name itself does not need to be enumerated.
+const colorFunctionPattern = /^[a-z][a-z0-9-]*\([0-9a-z_.,%\s/+*()#-]*\)$/i
+
+// These would let a color value pull in a remote resource, and `/*` opens a
+// comment that could hide the rest of the declaration.
+const forbiddenFunctionPattern =
+	/(?:^|[^a-z0-9_-])(?:url|image|image-set|cross-fade|element|paint)\s*\(/i
+const commentPattern = /\/\*/
+
+const maxColorLength = 256
 
 /**
- * Accepts a CSS color literal. Anything containing characters that could end
- * the declaration (`;`, `}`, quotes, extra parentheses) is rejected.
+ * Parentheses must nest properly and only close at the very end, so a value
+ * cannot continue past the function it opened with.
+ */
+const hasBalancedParentheses = (value: string): boolean => {
+	let depth = 0
+
+	for (let i = 0; i < value.length; i++) {
+		const char = value[i]
+
+		if (char === '(') {
+			depth++
+		} else if (char === ')') {
+			depth--
+
+			if (depth < 0) {
+				return false
+			}
+
+			if (depth === 0 && i !== value.length - 1) {
+				return false
+			}
+		}
+	}
+
+	return depth === 0
+}
+
+/**
+ * Accepts a CSS color literal: hex, a keyword, or any color function such as
+ * `rgb()`, `oklch()`, `color-mix()` and `var()`. Anything containing characters
+ * that could end the declaration (`;`, `}`, quotes, `!important`) is rejected.
  */
 export const sanitizeCssColor = (
 	color: string | undefined,
@@ -29,7 +67,19 @@ export const sanitizeCssColor = (
 
 	const value = color.trim()
 
-	return cssColorPatterns.some((pattern) => pattern.test(value))
+	if (value.length === 0 || value.length > maxColorLength) {
+		return undefined
+	}
+
+	if (forbiddenFunctionPattern.test(value) || commentPattern.test(value)) {
+		return undefined
+	}
+
+	if (hexColorPattern.test(value) || keywordColorPattern.test(value)) {
+		return value
+	}
+
+	return colorFunctionPattern.test(value) && hasBalancedParentheses(value)
 		? value
 		: undefined
 }

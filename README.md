@@ -120,7 +120,9 @@ Both values are written into the inline `style` attribute of the image, so they
 are validated before use and silently ignored when they do not match:
 
 - `dataUri`: a `data:` URI for an image, e.g. `data:image/png;base64,...`.
-- `color`: a CSS color literal, e.g. `#c5c5c5`, `red`, `rgba(0, 0, 0, 0.5)`.
+- `color`: a CSS color literal, e.g. `#c5c5c5`, `red`, `rgba(0, 0, 0, 0.5)`,
+  `oklch(70% 0.1 200)` or `var(--placeholder-color)`. Values that reference a
+  remote resource (`url()`, `image-set()`) are not allowed.
 
 This prevents a value taken from an untrusted source from injecting arbitrary
 CSS declarations into the element.
