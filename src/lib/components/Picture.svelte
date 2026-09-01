@@ -2,6 +2,11 @@
 import { BROWSER } from 'esm-env'
 import type { PictureSrc } from './type.js'
 import { afterUpdate } from 'svelte'
+import {
+	sanitizeCssColor,
+	sanitizeImageDataUri,
+	toAbsoluteUrl,
+} from './sanitize.js'
 
 export let src: PictureSrc
 // biome-ignore lint/style/useConst:
@@ -9,6 +14,7 @@ export let alt = ''
 // biome-ignore lint/style/useConst:
 export let title = ''
 
+// biome-ignore lint/style/useConst:
 export let style = ''
 // biome-ignore lint/style/useConst:
 let className = ''
@@ -18,18 +24,37 @@ const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math
 const getImgElement = () =>
 	BROWSER ? (document.getElementById(imgId) as HTMLImageElement | null) : null
 
-let loadStatus: 'loading' | 'loaded' = 'loading'
-$: {
-	loadStatus = 'loading'
-
-	if (src.placeholder) {
-		if (src.placeholder.dataUri) {
-			style = `${style} background: url(${src.placeholder.dataUri}) no-repeat center/cover;`
-		}
-		if (src.placeholder.color) {
-			style = `${style} background-color: ${src.placeholder.color};`
-		}
+const buildPlaceholderStyle = (placeholder: PictureSrc['placeholder']) => {
+	if (!placeholder) {
+		return ''
 	}
+
+	let result = ''
+
+	// Both values are rejected unless they are a plain CSS color / image data
+	// URI, so a value from an untrusted source cannot append CSS declarations.
+	const dataUri = sanitizeImageDataUri(placeholder.dataUri)
+	if (dataUri) {
+		result = `${result} background: url("${dataUri}") no-repeat center/cover;`
+	}
+
+	const color = sanitizeCssColor(placeholder.color)
+	if (color) {
+		result = `${result} background-color: ${color};`
+	}
+
+	return result
+}
+
+let loadStatus: 'loading' | 'loaded' = 'loading'
+
+// The placeholder is combined with the caller's `style` instead of being
+// appended to it, which used to grow the prop on every `src` change.
+$: placeholderStyle = buildPlaceholderStyle(src.placeholder)
+$: computedStyle = `${style}${placeholderStyle}`
+
+$: if (src) {
+	loadStatus = 'loading'
 
 	const img = getImgElement()
 
@@ -70,9 +95,12 @@ const handleImgError = () => {
 
 	let fallbackUrl: string | undefined = undefined
 
-	const index = src.fallback.findIndex(
-		(url) => new URL(url).toString() === new URL(img.src).toString(),
-	)
+	const currentUrl = toAbsoluteUrl(img.src)
+	const index = src.fallback.findIndex((url) => {
+		const candidate = toAbsoluteUrl(url, img.baseURI)
+
+		return candidate !== undefined && candidate === currentUrl
+	})
 	if (index === -1) {
 		fallbackUrl = src.fallback[0]
 	} else {
@@ -118,7 +146,7 @@ const handleLoaded = (e: Event) => {
 		id={imgId}
 		width={src.w}
 		height={src.h}
-		{style}
+		style={computedStyle}
 		class={src.blur ? `image-blur-${loadStatus} ${className}` : className}
 		src={src.img}
 		alt={alt}
