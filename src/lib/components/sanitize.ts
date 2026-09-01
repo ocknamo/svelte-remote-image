@@ -3,60 +3,29 @@
  * coming from an untrusted source (a CMS, an API, a user profile) must not be
  * able to append extra CSS declarations to the element.
  *
- * Both helpers return `undefined` for anything they cannot verify, and the
+ * Both helpers return `undefined` for a value they consider unsafe, and the
  * caller then omits the declaration entirely.
  */
-
-const hexColorPattern = /^#(?:[0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i
-
-// Named colors, `transparent`, `currentColor`.
-const keywordColorPattern = /^[a-z][a-z0-9-]*$/i
-
-// Function notation: `rgb()`, `hsl()`, `oklch()`, `color-mix()`, `var()`, ...
-// The argument list only allows characters that cannot end the declaration, so
-// the function name itself does not need to be enumerated.
-const colorFunctionPattern = /^[a-z][a-z0-9-]*\([0-9a-z_.,%\s/+*()#-]*\)$/i
-
-// These would let a color value pull in a remote resource, and `/*` opens a
-// comment that could hide the rest of the declaration.
-const forbiddenFunctionPattern =
-	/(?:^|[^a-z0-9_-])(?:url|image|image-set|cross-fade|element|paint)\s*\(/i
-const commentPattern = /\/\*/
 
 const maxColorLength = 256
 
 /**
- * Parentheses must nest properly and only close at the very end, so a value
- * cannot continue past the function it opened with.
+ * The value ends up as `background-color: <value>;` inside a `style`
+ * attribute, so only two things actually matter:
+ *
+ * - `;` (and `{}`) would end the declaration and let a new one follow, and an
+ *   opening CSS comment could comment out what comes after it.
+ * - The listed functions would make the value fetch a remote resource.
+ *
+ * Everything else is left to the browser: an invalid color is simply dropped,
+ * and Svelte escapes the attribute, so quotes cannot break out into HTML.
  */
-const hasBalancedParentheses = (value: string): boolean => {
-	let depth = 0
-
-	for (let i = 0; i < value.length; i++) {
-		const char = value[i]
-
-		if (char === '(') {
-			depth++
-		} else if (char === ')') {
-			depth--
-
-			if (depth < 0) {
-				return false
-			}
-
-			if (depth === 0 && i !== value.length - 1) {
-				return false
-			}
-		}
-	}
-
-	return depth === 0
-}
+const unsafeColorPattern =
+	/[;{}]|\/\*|(?:^|[^a-z0-9_-])(?:url|image|image-set|cross-fade|element|paint)\s*\(/i
 
 /**
- * Accepts a CSS color literal: hex, a keyword, or any color function such as
- * `rgb()`, `oklch()`, `color-mix()` and `var()`. Anything containing characters
- * that could end the declaration (`;`, `}`, quotes, `!important`) is rejected.
+ * Accepts any CSS color the browser understands - hex, keywords, `rgb()`,
+ * `oklch()`, `color-mix()`, `var()` - and rejects the constructs above.
  */
 export const sanitizeCssColor = (
 	color: string | undefined,
@@ -71,17 +40,7 @@ export const sanitizeCssColor = (
 		return undefined
 	}
 
-	if (forbiddenFunctionPattern.test(value) || commentPattern.test(value)) {
-		return undefined
-	}
-
-	if (hexColorPattern.test(value) || keywordColorPattern.test(value)) {
-		return value
-	}
-
-	return colorFunctionPattern.test(value) && hasBalancedParentheses(value)
-		? value
-		: undefined
+	return unsafeColorPattern.test(value) ? undefined : value
 }
 
 /**

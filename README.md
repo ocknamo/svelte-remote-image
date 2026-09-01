@@ -117,12 +117,13 @@ Alt text for image.
 Image data and background color for fastest display.
 
 Both values are written into the inline `style` attribute of the image, so they
-are validated before use and silently ignored when they do not match:
+are checked before use and silently ignored when they are not safe to inline:
 
-- `dataUri`: a `data:` URI for an image, e.g. `data:image/png;base64,...`.
-- `color`: a CSS color literal, e.g. `#c5c5c5`, `red`, `rgba(0, 0, 0, 0.5)`,
-  `oklch(70% 0.1 200)` or `var(--placeholder-color)`. Values that reference a
-  remote resource (`url()`, `image-set()`) are not allowed.
+- `dataUri`: must be a `data:` URI for an image, e.g. `data:image/png;base64,...`.
+- `color`: any CSS color works - `#c5c5c5`, `red`, `rgba(0, 0, 0, 0.5)`,
+  `oklch(70% 0.1 200)`, `var(--placeholder-color)` - as long as it neither ends
+  the declaration (`;`, `{}`, a CSS comment) nor references a remote resource
+  (`url()`, `image-set()`, ...). Values longer than 256 characters are ignored.
 
 This prevents a value taken from an untrusted source from injecting arbitrary
 CSS declarations into the element.
