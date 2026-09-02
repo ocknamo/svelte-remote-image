@@ -1,6 +1,6 @@
 <script lang="ts">
 import type { ImgSrc, PictureSrc } from '$lib/components/type.js'
-import { Picture, Img } from '$lib/index.js'
+import { Img, Picture } from '$lib/index.js'
 
 const optimazerPrefix = 'https://nostr-image-optimizer.ocknamo.com/image/'
 const originalImageUrl =

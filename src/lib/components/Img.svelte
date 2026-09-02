@@ -1,19 +1,16 @@
 <script lang="ts">
 import { BROWSER } from 'esm-env'
-import type { ImgSrc } from './type.js'
 import { afterUpdate } from 'svelte'
 import { toAbsoluteUrl } from './sanitize.js'
+import type { ImgSrc } from './type.js'
 
 export let src: ImgSrc
-// biome-ignore lint/style/useConst:
 export let alt = ''
-// biome-ignore lint/style/useConst:
 export let title = ''
 
-// biome-ignore lint/style/useConst:
 export let style = ''
-// biome-ignore lint/style/useConst:
 let className = ''
+
 export { className as class }
 
 const imgId = `svelte-remote-image-${alt.replaceAll(' ', '-')}-${Math.round(Math.random() * 10000000)}`
@@ -32,7 +29,7 @@ $: {
 afterUpdate(async () => {
 	const img = getImgElement()
 
-	if (!img || !img.complete) {
+	if (!img?.complete) {
 		return
 	}
 
@@ -58,7 +55,7 @@ const handleImgError = () => {
 		return
 	}
 
-	let fallbackUrl: string | undefined = undefined
+	let fallbackUrl: string | undefined
 
 	const currentUrl = toAbsoluteUrl(img.src)
 	const index = imgSrc.fallback.findIndex((url) => {
