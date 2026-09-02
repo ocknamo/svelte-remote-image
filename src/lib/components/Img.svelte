@@ -2,6 +2,7 @@
 import { BROWSER } from 'esm-env'
 import type { ImgSrc } from './type.js'
 import { afterUpdate } from 'svelte'
+import { toAbsoluteUrl } from './sanitize.js'
 
 export let src: ImgSrc
 // biome-ignore lint/style/useConst:
@@ -59,9 +60,12 @@ const handleImgError = () => {
 
 	let fallbackUrl: string | undefined = undefined
 
-	const index = imgSrc.fallback.findIndex(
-		(url) => new URL(url).toString() === new URL(img.src).toString(),
-	)
+	const currentUrl = toAbsoluteUrl(img.src)
+	const index = imgSrc.fallback.findIndex((url) => {
+		const candidate = toAbsoluteUrl(url, img.baseURI)
+
+		return candidate !== undefined && candidate === currentUrl
+	})
 	if (index === -1) {
 		fallbackUrl = imgSrc.fallback[0]
 	} else {
