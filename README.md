@@ -142,6 +142,14 @@ Default false.
 
 ## Developing
 
+Node.js 22 or later is required to build this repository. `wrangler`, pulled in
+by `@sveltejs/adapter-cloudflare`, declares `node >= 22.0.0`, and `.npmrc` sets
+`engine-strict=true`, so an older version fails the install instead of warning.
+The version is pinned in `.node-version` for build environments that read it.
+
+This applies to development only. The published package has no runtime
+dependencies and works on older versions of Node.
+
 Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
